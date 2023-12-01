@@ -6,56 +6,103 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] GameObject[] AllTubes;
     [SerializeField] Color[] AllColors;
-    [SerializeField] List<GameObject> SelectedTubes;
-    [SerializeField] List<Color> SelectedColors;
+    //[SerializeField] List<Color> SelectedColor;
+    [SerializeField] List<GameObject> SelectedTubes, AllGeneratedBall;
     [SerializeField] GameObject BallPrefab;
     private void Start()
     {
-        Debug.Log("1");
+        Debug.Log("Start");
         TubeSelection();
-        Debug.Log("2");
-        TubeColorSet();
-        Debug.Log("3");
+        BallGenerate();
+    }
+    private void Awake()
+    {
+        Debug.Log("Awakee");
     }
     private void Update()
     {
-        Debug.Log("-");
+
     }
     public void TubeSelection()
     {
         int RandomTubeIndex;
-        Debug.Log("Func");
-        for(int i = 0 ; i < 3 ; i++)
+        for (int i = 0; i < 3; i++)
         {
-            Debug.Log("Forr");
             do
             {
-                Debug.Log("While");
                 RandomTubeIndex = Random.Range(0, AllTubes.Length);
             } while (SelectedTubes.Contains(AllTubes[RandomTubeIndex]));
             SelectedTubes.Add(AllTubes[RandomTubeIndex]);
-            Debug.Log("Cube added");
         }
     }
-    public void TubeColorSet()
+    public void BallGenerate()
     {
-        int RandomBallColor;
-        for(int i = 0;i < SelectedTubes.Count;i++)
+        for (int i = 0; i < SelectedTubes.Count; i++)
         {
-            for(int j = 0 ; j < 4 ; j++)
+            for (int j = 0; j < 4; j++)
             {
                 GameObject Ball = Instantiate(BallPrefab, SelectedTubes[i].transform.GetChild(j).position, Quaternion.identity, SelectedTubes[i].transform);
-                Debug.Log("Ball generated");
-                do
-                {
-                    RandomBallColor = Random.Range(0, AllColors.Length);//2
-                    Debug.Log("While called");
-                } while (SelectedColors.Contains(AllColors[RandomBallColor]));//2
-                Debug.Log("Index = "+RandomBallColor);
-                SelectedColors.Add(AllColors[RandomBallColor]);//2
-                Ball.GetComponent<MeshRenderer>().material.color = AllColors[RandomBallColor];
-                Debug.Log("Ball name = "+Ball.gameObject.name);
+                AllGeneratedBall.Add(Ball);
+            }
+        }
+        BallColorSet();
+    }
+    //public void BallColorSet()
+    //{
+    //    List<Color> SelectedColor = new List<Color>(AllColors);
+
+    //    for (int i = 0; i < AllGeneratedBall.Count; i++)
+    //    {
+    //        int BallIndex;
+    //        do
+    //        {
+    //            BallIndex = Random.Range(0, AllColors.Length);
+    //            Debug.Log("Generated index = " + BallIndex);
+    //            if (AllColors != null && BallIndex >= 0 && BallIndex < AllColors.Length)
+    //            {
+    //                SelectedColor.Add(AllColors[BallIndex]);
+    //            }
+    //            else
+    //            {
+    //                Debug.Log("Out of range");
+    //            }
+    //        } while (SelectedColor.Contains(AllColors[BallIndex]));
+
+    //        //SelectedColor.Add(AllColors[BallIndex]);
+
+    //        for (int j = 0; j < 4; j++)
+    //            {
+    //                Debug.Log("Forrr");
+    //                int val = Random.Range(0, AllGeneratedBall.Count);
+    //                AllGeneratedBall[val].GetComponent<MeshRenderer>().material.color = AllColors[BallIndex];
+    //                AllGeneratedBall.Remove(AllGeneratedBall[val]);
+    //            }
+    //        //}
+    //    }
+    //}
+    public void BallColorSet()
+    {
+        List<Color> availableColors = new List<Color>(AllColors);
+
+        for (int i = 0; i < AllGeneratedBall.Count; i++)
+        {
+            if (availableColors.Count == 0)
+            {
+                Debug.LogWarning("Not enough colors available.");
+                break;
+            }
+
+            int randomColorIndex = Random.Range(0, availableColors.Count);
+            Color selectedColor = availableColors[randomColorIndex];
+
+            AllGeneratedBall[i].GetComponent<MeshRenderer>().material.color = selectedColor;
+
+            if (i % 4 == 3)
+            {
+                // Remove the color from available colors when it has been used 4 times
+                availableColors.RemoveAt(randomColorIndex);
             }
         }
     }
+
 }
