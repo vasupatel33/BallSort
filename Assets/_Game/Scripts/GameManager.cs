@@ -5,8 +5,8 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     [SerializeField] GameObject[] AllTubes;
-    [SerializeField] Color[] AllColors;
-    //[SerializeField] List<Color> SelectedColor;
+    [SerializeField] List<Color> AllColors;
+    //[SerializeField] List<Color> SelectedColors = new List<Color>();
     [SerializeField] List<GameObject> SelectedTubes, AllGeneratedBall;
     [SerializeField] GameObject BallPrefab;
     private void Start()
@@ -47,62 +47,62 @@ public class GameManager : MonoBehaviour
         }
         BallColorSet();
     }
+    public void BallColorSet()
+    {
+        //List<Color> SelectedColor = new List<Color>(AllColors);
+        for (int i = 0; i < AllGeneratedBall.Count; i++)
+        {
+            int BallIndex;
+            //do
+            //{
+                    BallIndex = Random.Range(0, AllColors.Count);
+            //    Debug.Log("Generated index = " + BallIndex);
+            //    if (AllColors != null && BallIndex >= 0 && BallIndex < AllColors.Count)
+            //    {
+            //        //SelectedColor.Add(AllColors[BallIndex]);
+            //    }
+            //    else
+            //    {
+            //        Debug.Log("Out of range");
+            //    }
+            //} while (SelectedColor.Contains(AllColors[BallIndex]));
+
+            //SelectedColor.Add(AllColors[BallIndex]);
+
+            for (int j = 0; j < 4; j++)
+            {
+                Debug.Log("Forrr");
+                int val = Random.Range(0, AllGeneratedBall.Count);
+                AllGeneratedBall[val].GetComponent<MeshRenderer>().material.color = AllColors[BallIndex];
+                AllGeneratedBall.Remove(AllGeneratedBall[val]);
+            }
+            AllColors.RemoveAt(BallIndex);
+            //}
+        }
+    }
     //public void BallColorSet()
     //{
-    //    List<Color> SelectedColor = new List<Color>(AllColors);
+    //    List<Color> availableColors = new List<Color>(AllColors);
 
     //    for (int i = 0; i < AllGeneratedBall.Count; i++)
     //    {
-    //        int BallIndex;
-    //        do
+    //        if (availableColors.Count == 0)
     //        {
-    //            BallIndex = Random.Range(0, AllColors.Length);
-    //            Debug.Log("Generated index = " + BallIndex);
-    //            if (AllColors != null && BallIndex >= 0 && BallIndex < AllColors.Length)
-    //            {
-    //                SelectedColor.Add(AllColors[BallIndex]);
-    //            }
-    //            else
-    //            {
-    //                Debug.Log("Out of range");
-    //            }
-    //        } while (SelectedColor.Contains(AllColors[BallIndex]));
+    //            Debug.LogWarning("Not enough colors available.");
+    //            break;
+    //        }
 
-    //        //SelectedColor.Add(AllColors[BallIndex]);
+    //        int randomColorIndex = Random.Range(0, availableColors.Count);
+    //        Color selectedColor = availableColors[randomColorIndex];
 
-    //        for (int j = 0; j < 4; j++)
-    //            {
-    //                Debug.Log("Forrr");
-    //                int val = Random.Range(0, AllGeneratedBall.Count);
-    //                AllGeneratedBall[val].GetComponent<MeshRenderer>().material.color = AllColors[BallIndex];
-    //                AllGeneratedBall.Remove(AllGeneratedBall[val]);
-    //            }
-    //        //}
+    //        AllGeneratedBall[i].GetComponent<MeshRenderer>().material.color = selectedColor;
+
+    //        if (i % 4 == 3)
+    //        {
+    //            // Remove the color from available colors when it has been used 4 times
+    //            availableColors.RemoveAt(randomColorIndex);
+    //        }
     //    }
     //}
-    public void BallColorSet()
-    {
-        List<Color> availableColors = new List<Color>(AllColors);
-
-        for (int i = 0; i < AllGeneratedBall.Count; i++)
-        {
-            if (availableColors.Count == 0)
-            {
-                Debug.LogWarning("Not enough colors available.");
-                break;
-            }
-
-            int randomColorIndex = Random.Range(0, availableColors.Count);
-            Color selectedColor = availableColors[randomColorIndex];
-
-            AllGeneratedBall[i].GetComponent<MeshRenderer>().material.color = selectedColor;
-
-            if (i % 4 == 3)
-            {
-                // Remove the color from available colors when it has been used 4 times
-                availableColors.RemoveAt(randomColorIndex);
-            }
-        }
-    }
 
 }
