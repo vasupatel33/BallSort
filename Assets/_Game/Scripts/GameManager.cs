@@ -6,7 +6,7 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] GameObject[] AllTubes;
     [SerializeField] List<Color> AllColors;
-    //[SerializeField] List<Color> SelectedColors = new List<Color>();
+    [SerializeField] List<Color> SelectedColors = new List<Color>();
     [SerializeField] List<GameObject> SelectedTubes, AllGeneratedBall;
     [SerializeField] GameObject BallPrefab;
     private void Start()
@@ -49,37 +49,44 @@ public class GameManager : MonoBehaviour
     }
     public void BallColorSet()
     {
-        //List<Color> SelectedColor = new List<Color>(AllColors);
+        // Make sure to clear the SelectedColors list before adding new colors
+        SelectedColors.Clear();
+
         for (int i = 0; i < AllGeneratedBall.Count; i++)
         {
             int BallIndex;
-            //do
-            //{
-                    BallIndex = Random.Range(0, AllColors.Count);
-            //    Debug.Log("Generated index = " + BallIndex);
-            //    if (AllColors != null && BallIndex >= 0 && BallIndex < AllColors.Count)
-            //    {
-            //        //SelectedColor.Add(AllColors[BallIndex]);
-            //    }
-            //    else
-            //    {
-            //        Debug.Log("Out of range");
-            //    }
-            //} while (SelectedColor.Contains(AllColors[BallIndex]));
+            do
+            {
+                BallIndex = Random.Range(0, AllColors.Count);
+                Debug.Log("Generated index = " + BallIndex);
 
-            //SelectedColor.Add(AllColors[BallIndex]);
+                if (AllColors != null && BallIndex >= 0 && BallIndex < AllColors.Count)
+                {
+                    if (!SelectedColors.Contains(AllColors[BallIndex]))
+                    {
+                        SelectedColors.Add(AllColors[BallIndex]);
+                    }
+                    else
+                    {
+                        Debug.Log("Already selected this color, trying again.");
+                    }
+                }
+                else
+                {
+                    Debug.Log("Out of range");
+                }
+            } while (SelectedColors.Count < 4);  // Make sure you select 4 unique colors
 
             for (int j = 0; j < 4; j++)
             {
                 Debug.Log("Forrr");
                 int val = Random.Range(0, AllGeneratedBall.Count);
-                AllGeneratedBall[val].GetComponent<MeshRenderer>().material.color = AllColors[BallIndex];
-                AllGeneratedBall.Remove(AllGeneratedBall[val]);
+                AllGeneratedBall[val].GetComponent<MeshRenderer>().material.color = SelectedColors[i];  // Use SelectedColors[i] instead of AllColors[BallIndex]
+                AllGeneratedBall.RemoveAt(val);  // Use RemoveAt to remove by index
             }
-            AllColors.RemoveAt(BallIndex);
-            //}
         }
     }
+
     //public void BallColorSet()
     //{
     //    List<Color> availableColors = new List<Color>(AllColors);
