@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657892, g: 0.4964128, b: 0.5748173, a: 1}
+  m_IndirectSpecularColor: {r: 0.44402188, g: 0.4931649, b: 0.57223135, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -820,7 +820,7 @@ Transform:
   m_GameObject: {fileID: 1047707541}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3, y: 3.2, z: 2}
+  m_LocalPosition: {x: 3, y: 3.2, z: 0}
   m_LocalScale: {x: 6.2996497, y: 6.2996497, z: 6.2996497}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1060,13 +1060,19 @@ MonoBehaviour:
   - {fileID: 1465503208}
   AllColors:
   - {r: 1, g: 0, b: 0.049019814, a: 1}
-  - {r: 0.20714669, g: 0.8962264, b: 0.23605916, a: 1}
+  - {r: 0.15015513, g: 0.8018868, b: 0, a: 1}
   - {r: 1, g: 0.3254717, b: 0.93022114, a: 1}
-  - {r: 0, g: 0.9430566, b: 1, a: 1}
-  - {r: 1, g: 0.63795877, b: 0, a: 1}
+  - {r: 0, g: 0.2249496, b: 1, a: 1}
+  - {r: 1, g: 0.522546, b: 0, a: 1}
   SelectedTubes: []
   AllGeneratedBall: []
   BallPrefab: {fileID: 7365601351864135827, guid: 4baf44cdad2d6044095faa299b242aa6, type: 3}
+  AllTags:
+  - red
+  - green
+  - pink
+  - blue
+  - orange
 --- !u!1 &1238299421
 GameObject:
   m_ObjectHideFlags: 0
@@ -1592,7 +1598,7 @@ Transform:
   m_GameObject: {fileID: 1702598775}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3, y: 3.2, z: 2}
+  m_LocalPosition: {x: -3, y: 3.2, z: 0}
   m_LocalScale: {x: 6.2996497, y: 6.2996497, z: 6.2996497}
   m_ConstrainProportionsScale: 0
   m_Children:

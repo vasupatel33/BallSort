@@ -7,5 +7,6 @@ public class TubeController : MonoBehaviour
     private void OnMouseUp()
     {
         Debug.Log("Tube name = "+this.gameObject.name);
+        GameManager.Instance.ClickedBallUp(this.gameObject);
     }
 }
