@@ -6,7 +6,7 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] GameObject[] AllTubes;
     [SerializeField] List<Color> AllColors;
-    //[SerializeField] List<Color> SelectedColors = new List<Color>();
+    [SerializeField] List<Color> RandomlySelectedColor = new List<Color>();
     [SerializeField] List<GameObject> SelectedTubes, AllGeneratedBall;
     [SerializeField] GameObject BallPrefab;
     [SerializeField] string[] AllTags;
@@ -49,11 +49,13 @@ public class GameManager : MonoBehaviour
     {
         for (int i = 0; i < AllGeneratedBall.Count; i++)
         {
+            int RandomColorIndex = Random.Range(0,AllColors.Count);
+            RandomlySelectedColor.Add(AllColors[RandomColorIndex]);
             for (int j = 0; j < 4; j++)
             {
                 Debug.Log("Forrr");
                 int val = Random.Range(0, AllGeneratedBall.Count);
-                AllGeneratedBall[val].GetComponent<MeshRenderer>().material.color = AllColors[i];  // Use SelectedColors[i] instead of AllColors[BallIndex]
+                AllGeneratedBall[val].GetComponent<MeshRenderer>().material.color = RandomlySelectedColor[i];
                 AllGeneratedBall[val].GetComponent<MeshRenderer>().tag = AllTags[i];
                 AllGeneratedBall.RemoveAt(val);  // Use RemoveAt to remove by index
             }
@@ -63,7 +65,7 @@ public class GameManager : MonoBehaviour
     public void ClickedBallUp(GameObject clickedObj)
     {
         FirstClickedObject = clickedObj;
-        if(clickedObj.transform.childCount > 5)
+        if (clickedObj.transform.childCount > 5)
         {
             clickedObj.transform.GetChild(clickedObj.transform.childCount - 1).transform.position = clickedObj.transform.GetChild(4).transform.position;
         }
@@ -71,7 +73,5 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log("No ball in the tube");
         }
-        
-
     }
 }
