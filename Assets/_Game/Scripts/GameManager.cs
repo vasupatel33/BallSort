@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject[] AllTubes;
     [SerializeField] List<Color> AllColors;
     [SerializeField] List<Color> RandomlySelectedColor = new List<Color>();
+    [SerializeField] List<int> RandomlyColorIntIndex;
     [SerializeField] List<GameObject> SelectedTubes, AllGeneratedBall;
     [SerializeField] GameObject BallPrefab;
     [SerializeField] string[] AllTags;
@@ -49,29 +50,79 @@ public class GameManager : MonoBehaviour
     {
         for (int i = 0; i < AllGeneratedBall.Count; i++)
         {
-            int RandomColorIndex = Random.Range(0,AllColors.Count);
+            int RandomColorIndex;
+            do
+            {
+                RandomColorIndex = Random.Range(0,AllColors.Count);
+
+            } while (RandomlySelectedColor.Contains(AllColors[RandomColorIndex]));
             RandomlySelectedColor.Add(AllColors[RandomColorIndex]);
+            RandomlyColorIntIndex.Add(RandomColorIndex);
             for (int j = 0; j < 4; j++)
             {
                 Debug.Log("Forrr");
                 int val = Random.Range(0, AllGeneratedBall.Count);
                 AllGeneratedBall[val].GetComponent<MeshRenderer>().material.color = RandomlySelectedColor[i];
-                AllGeneratedBall[val].GetComponent<MeshRenderer>().tag = AllTags[i];
+                AllGeneratedBall[val].GetComponent<MeshRenderer>().tag = AllTags[RandomlyColorIntIndex[i]];
                 AllGeneratedBall.RemoveAt(val);  // Use RemoveAt to remove by index
             }
         }
     }
-    GameObject FirstClickedObject;
+    bool flag;
+    GameObject FirstClickedObject, SecondClickedObject;
     public void ClickedBallUp(GameObject clickedObj)
     {
-        FirstClickedObject = clickedObj;
-        if (clickedObj.transform.childCount > 5)
+        if (!flag)
         {
-            clickedObj.transform.GetChild(clickedObj.transform.childCount - 1).transform.position = clickedObj.transform.GetChild(4).transform.position;
+            Debug.Log("i");
+            if (clickedObj.transform.childCount > 5)
+            {
+                Debug.Log("IF");
+                FirstClickedObject = clickedObj;
+                FirstClickedObject.transform.GetChild(FirstClickedObject.transform.childCount - 1).transform.position = FirstClickedObject.transform.GetChild(4).transform.position;
+                flag = true;
+            }
+            else
+            {
+                Debug.Log("No ball in the tube");
+            }
         }
         else
         {
-            Debug.Log("No ball in the tube");
+            Debug.Log("e");
+            if(clickedObj.transform.childCount >= 9)
+            {
+                Debug.Log("Tube full");
+                FirstClickedObject.transform.GetChild(FirstClickedObject.transform.childCount - 1).transform.position = FirstClickedObject.transform.GetChild(FirstClickedObject.transform.childCount - 6).transform.position;
+                flag = false;
+            }
+            else if(clickedObj.transform.childCount == 5)
+            {
+                Debug.Log("Else ifff");
+                SecondClickedObject = clickedObj;
+                FirstClickedObject.transform.GetChild(FirstClickedObject.transform.childCount - 1).transform.parent = SecondClickedObject.transform;
+                SecondClickedObject.transform.GetChild(SecondClickedObject.transform.childCount - 1).transform.position = SecondClickedObject.transform.GetChild(0).transform.position;
+                flag = false;
+            }
+            else
+            {
+                SecondClickedObject = clickedObj;
+                if (SecondClickedObject.transform.GetChild(SecondClickedObject.transform.childCount - 1).tag == FirstClickedObject.transform.GetChild(FirstClickedObject.transform.childCount - 1).tag)
+                {
+                    FirstClickedObject.transform.GetChild(FirstClickedObject.transform.childCount - 1).transform.parent = SecondClickedObject.transform;
+                    SecondClickedObject.transform.GetChild(SecondClickedObject.transform.childCount - 1).transform.position = SecondClickedObject.transform.GetChild(SecondClickedObject.transform.childCount - 6).transform.position;
+                    flag = false;
+                    Debug.Log("Else of else");
+                }
+                else
+                {
+                    //SecondClickedObject = clickedObj;
+                    FirstClickedObject.transform.GetChild(FirstClickedObject.transform.childCount - 1).transform.position = FirstClickedObject.transform.GetChild(FirstClickedObject.transform.childCount - 6).transform.position;
+                    flag = false;
+                    Debug.Log("eeeeeeeeeeeeeeeeeee");
+                }
+            }
+            
         }
     }
 }
