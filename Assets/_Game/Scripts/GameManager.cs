@@ -60,7 +60,7 @@ public class GameManager : MonoBehaviour
             RandomlyColorIntIndex.Add(RandomColorIndex);
             for (int j = 0; j < 4; j++)
             {
-                Debug.Log("Forrr");
+                //Debug.Log("Forrr");
                 int val = Random.Range(0, AllGeneratedBall.Count);
                 AllGeneratedBall[val].GetComponent<MeshRenderer>().material.color = RandomlySelectedColor[i];
                 AllGeneratedBall[val].GetComponent<MeshRenderer>().tag = AllTags[RandomlyColorIntIndex[i]];
@@ -74,10 +74,10 @@ public class GameManager : MonoBehaviour
     {
         if (!flag)
         {
-            Debug.Log("i");
+            //Debug.Log("i");
             if (clickedObj.transform.childCount > 5)
             {
-                Debug.Log("IF");
+                //Debug.Log("IF");
                 FirstClickedObject = clickedObj;
                 FirstClickedObject.transform.GetChild(FirstClickedObject.transform.childCount - 1).transform.position = FirstClickedObject.transform.GetChild(4).transform.position;
                 flag = true;
@@ -89,16 +89,16 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("e");
+            //Debug.Log("e");
             if(clickedObj.transform.childCount >= 9)
             {
-                Debug.Log("Tube full");
+                //Debug.Log("Tube full");
                 FirstClickedObject.transform.GetChild(FirstClickedObject.transform.childCount - 1).transform.position = FirstClickedObject.transform.GetChild(FirstClickedObject.transform.childCount - 6).transform.position;
                 flag = false;
             }
             else if(clickedObj.transform.childCount == 5)
             {
-                Debug.Log("Else ifff");
+                //Debug.Log("Else ifff");
                 SecondClickedObject = clickedObj;
                 FirstClickedObject.transform.GetChild(FirstClickedObject.transform.childCount - 1).transform.parent = SecondClickedObject.transform;
                 SecondClickedObject.transform.GetChild(SecondClickedObject.transform.childCount - 1).transform.position = SecondClickedObject.transform.GetChild(0).transform.position;
@@ -112,17 +112,18 @@ public class GameManager : MonoBehaviour
                     FirstClickedObject.transform.GetChild(FirstClickedObject.transform.childCount - 1).transform.parent = SecondClickedObject.transform;
                     SecondClickedObject.transform.GetChild(SecondClickedObject.transform.childCount - 1).transform.position = SecondClickedObject.transform.GetChild(SecondClickedObject.transform.childCount - 6).transform.position;
                     flag = false;
-                    Debug.Log("Else of else");
+                    //Debug.Log("Else of else");
                 }
                 else
                 {
                     //SecondClickedObject = clickedObj;
                     FirstClickedObject.transform.GetChild(FirstClickedObject.transform.childCount - 1).transform.position = FirstClickedObject.transform.GetChild(FirstClickedObject.transform.childCount - 6).transform.position;
                     flag = false;
-                    Debug.Log("eeeeeeeeeeeeeeeeeee");
+                    //Debug.Log("eeeeeeeeeeeeeeeeeee");
                 }
-            }
-            
+            }   
         }
+        TubeController.instance.TubeFillCheck();
     }
+
 }
