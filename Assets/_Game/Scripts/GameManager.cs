@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class GameManager : MonoBehaviour
 {
@@ -74,12 +75,11 @@ public class GameManager : MonoBehaviour
     {
         if (!flag)
         {
-            //Debug.Log("i");
             if (clickedObj.transform.childCount > 5)
             {
-                //Debug.Log("IF");
                 FirstClickedObject = clickedObj;
-                FirstClickedObject.transform.GetChild(FirstClickedObject.transform.childCount - 1).transform.position = FirstClickedObject.transform.GetChild(4).transform.position;
+                FirstClickedObject.transform.GetChild(FirstClickedObject.transform.childCount - 1).transform.DOMove(FirstClickedObject.transform.GetChild(4).transform.position,0.3f).SetEase(Ease.OutBounce);
+                //position = FirstClickedObject.transform.GetChild(4).transform.position;
                 flag = true;
             }
             else
@@ -93,7 +93,8 @@ public class GameManager : MonoBehaviour
             if(clickedObj.transform.childCount >= 9)
             {
                 //Debug.Log("Tube full");
-                FirstClickedObject.transform.GetChild(FirstClickedObject.transform.childCount - 1).transform.position = FirstClickedObject.transform.GetChild(FirstClickedObject.transform.childCount - 6).transform.position;
+                FirstClickedObject.transform.GetChild(FirstClickedObject.transform.childCount - 1).transform.DOMove(FirstClickedObject.transform.GetChild(FirstClickedObject.transform.childCount - 6).transform.position, 0.3f);
+                
                 flag = false;
             }
             else if(clickedObj.transform.childCount == 5)
@@ -101,7 +102,12 @@ public class GameManager : MonoBehaviour
                 //Debug.Log("Else ifff");
                 SecondClickedObject = clickedObj;
                 FirstClickedObject.transform.GetChild(FirstClickedObject.transform.childCount - 1).transform.parent = SecondClickedObject.transform;
-                SecondClickedObject.transform.GetChild(SecondClickedObject.transform.childCount - 1).transform.position = SecondClickedObject.transform.GetChild(0).transform.position;
+                SecondClickedObject.transform.GetChild(SecondClickedObject.transform.childCount - 1).transform.DOMove(SecondClickedObject.transform.GetChild(4).transform.position,0.3f)
+                    .OnComplete(() =>
+                    {
+                        SecondClickedObject.transform.GetChild(SecondClickedObject.transform.childCount - 1).transform.DOMove(SecondClickedObject.transform.GetChild(0).transform.position, 0.3f);
+                    }).SetEase(Ease.InOutExpo);
+                //SecondClickedObject.transform.GetChild(SecondClickedObject.transform.childCount - 1).transform.position = SecondClickedObject.transform.GetChild(0).transform.position;
                 flag = false;
             }
             else
@@ -110,20 +116,70 @@ public class GameManager : MonoBehaviour
                 if (SecondClickedObject.transform.GetChild(SecondClickedObject.transform.childCount - 1).tag == FirstClickedObject.transform.GetChild(FirstClickedObject.transform.childCount - 1).tag)
                 {
                     FirstClickedObject.transform.GetChild(FirstClickedObject.transform.childCount - 1).transform.parent = SecondClickedObject.transform;
-                    SecondClickedObject.transform.GetChild(SecondClickedObject.transform.childCount - 1).transform.position = SecondClickedObject.transform.GetChild(SecondClickedObject.transform.childCount - 6).transform.position;
+                    //SecondClickedObject.transform.GetChild(SecondClickedObject.transform.childCount - 1).transform.position = ;
+
+
+                    SecondClickedObject.transform.GetChild(SecondClickedObject.transform.childCount - 1).transform.DOMove(SecondClickedObject.transform.GetChild(4).transform.position, 0.3f)
+                    .OnComplete(() =>
+                    {
+                        SecondClickedObject.transform.GetChild(SecondClickedObject.transform.childCount - 1).transform.DOMove(SecondClickedObject.transform.GetChild(SecondClickedObject.transform.childCount - 6).transform.position, 0.3f);
+                    }).SetEase(Ease.InOutExpo);
                     flag = false;
-                    //Debug.Log("Else of else");
                 }
                 else
                 {
-                    //SecondClickedObject = clickedObj;
                     FirstClickedObject.transform.GetChild(FirstClickedObject.transform.childCount - 1).transform.position = FirstClickedObject.transform.GetChild(FirstClickedObject.transform.childCount - 6).transform.position;
                     flag = false;
-                    //Debug.Log("eeeeeeeeeeeeeeeeeee");
                 }
             }   
         }
-        TubeController.instance.TubeFillCheck();
+        BallSameColorCheck();
     }
-
+    bool isChanged;
+    [SerializeField] List<GameObject> WinList;
+    void BallSameColorCheck()
+    {
+        WinList.Clear();
+        isChanged = false;
+        foreach(GameObject tube in AllTubes)
+        {
+            if (tube.transform.childCount >= 9)
+            {
+                WinList.Add(tube);
+            }
+            else
+            {
+                isChanged = false;
+            }
+        }
+        if(WinList.Count == 3)
+        {
+            foreach (GameObject selectedtube in WinList)
+            {
+                for (int i = 5; i < 9; i++)
+                {
+                    Debug.Log("Six index = "+ selectedtube.transform.GetChild(6).gameObject.name);
+                    Debug.Log("next index = "+ selectedtube.transform.GetChild(i).gameObject.name);
+                    if (selectedtube.transform.GetChild(5).gameObject.tag != selectedtube.transform.GetChild(i).gameObject.tag)
+                    {
+                        Debug.Log("if workss");
+                        isChanged = true;
+                        break;
+                    }
+                }
+            }
+        }
+        else
+        {
+            isChanged = true;
+        }
+        if(isChanged)
+        {
+            Debug.Log("continue play");
+        }
+        else
+        {
+            Debug.Log("Game completed");
+        }
+    }
 }
