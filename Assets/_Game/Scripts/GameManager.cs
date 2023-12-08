@@ -5,7 +5,8 @@ using DG.Tweening;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] GameObject[] AllTubes;
+    [SerializeField] List<GameObject> AllLevelTubes;
+    [SerializeField] List<GameObject> AllTubes;
     [SerializeField] List<Color> AllColors;
     [SerializeField] List<Color> RandomlySelectedColor = new List<Color>();
     [SerializeField] List<int> RandomlyColorIntIndex;
@@ -14,12 +15,45 @@ public class GameManager : MonoBehaviour
     [SerializeField] string[] AllTags;
 
     public static GameManager Instance;
+    int levelIndex;
     private void Awake()
     {
         Instance = this;
     }
     private void Start()
     {
+        PlayerPrefs.SetInt("IndexLevel",0);
+        int lvlIndex = PlayerPrefs.GetInt("IndexLevel",0);
+        Debug.Log("Index of level ="+lvlIndex);
+        for (int i = 0; i < AllLevelTubes.Count; i++)
+        {
+            Debug.Log("fOR");
+            if (lvlIndex == i)
+            {
+                Debug.Log("iF CALLED");
+                //foreach (Transform child in AllLevelTubes[i].transform)
+                //{
+                //    if (child != null && child.gameObject != null)
+                //    {
+                //        Debug.Log("Foreach called");
+                //        AllTubes.Add(child.gameObject);
+                //    }
+                //}
+                     Debug.Log("Before");
+                for (int j = 0; j < AllLevelTubes[i].transform.childCount; j++)
+                {
+                    Debug.Log("Foreach called");
+                    AllTubes.Add(AllLevelTubes[i]);
+                }
+
+            }
+            else
+            {
+                AllLevelTubes[i].SetActive(false);
+            }
+
+        }
+
         TubeSelection();
         BallGenerate();
     }
@@ -30,7 +64,7 @@ public class GameManager : MonoBehaviour
         {
             do
             {
-                RandomTubeIndex = Random.Range(0, AllTubes.Length);
+                RandomTubeIndex = Random.Range(0, AllTubes.Count);
             } while (SelectedTubes.Contains(AllTubes[RandomTubeIndex]));
             SelectedTubes.Add(AllTubes[RandomTubeIndex]);
         }
@@ -116,9 +150,7 @@ public class GameManager : MonoBehaviour
                 if (SecondClickedObject.transform.GetChild(SecondClickedObject.transform.childCount - 1).tag == FirstClickedObject.transform.GetChild(FirstClickedObject.transform.childCount - 1).tag)
                 {
                     FirstClickedObject.transform.GetChild(FirstClickedObject.transform.childCount - 1).transform.parent = SecondClickedObject.transform;
-                    //SecondClickedObject.transform.GetChild(SecondClickedObject.transform.childCount - 1).transform.position = ;
-
-
+                   
                     SecondClickedObject.transform.GetChild(SecondClickedObject.transform.childCount - 1).transform.DOMove(SecondClickedObject.transform.GetChild(4).transform.position, 0.3f)
                     .OnComplete(() =>
                     {
@@ -128,7 +160,7 @@ public class GameManager : MonoBehaviour
                 }
                 else
                 {
-                    FirstClickedObject.transform.GetChild(FirstClickedObject.transform.childCount - 1).transform.position = FirstClickedObject.transform.GetChild(FirstClickedObject.transform.childCount - 6).transform.position;
+                    FirstClickedObject.transform.GetChild(FirstClickedObject.transform.childCount - 1).transform.DOMove(FirstClickedObject.transform.GetChild(FirstClickedObject.transform.childCount - 6).transform.position,0.3f).SetEase(Ease.OutBounce);
                     flag = false;
                 }
             }   
