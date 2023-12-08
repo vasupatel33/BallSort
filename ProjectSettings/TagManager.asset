@@ -9,6 +9,11 @@ TagManager:
   - blue
   - pink
   - orange
+  - black
+  - white
+  - grey
+  - yellow
+  - purple
   layers:
   - Default
   - TransparentFX

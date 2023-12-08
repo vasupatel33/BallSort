@@ -31,6 +31,7 @@ public class GameManager : MonoBehaviour
             if (lvlIndex == i)
             {
                 Debug.Log("iF CALLED");
+                AllLevelTubes[i].SetActive(true);
                 //foreach (Transform child in AllLevelTubes[i].transform)
                 //{
                 //    if (child != null && child.gameObject != null)
@@ -38,12 +39,11 @@ public class GameManager : MonoBehaviour
                 //        Debug.Log("Foreach called");
                 //        AllTubes.Add(child.gameObject);
                 //    }
-                //}
-                     Debug.Log("Before");
+                Debug.Log("Before");
                 for (int j = 0; j < AllLevelTubes[i].transform.childCount; j++)
                 {
                     Debug.Log("Foreach called");
-                    AllTubes.Add(AllLevelTubes[i]);
+                    AllTubes.Add(AllLevelTubes[lvlIndex].transform.GetChild(j).gameObject);
                 }
 
             }
@@ -51,9 +51,7 @@ public class GameManager : MonoBehaviour
             {
                 AllLevelTubes[i].SetActive(false);
             }
-
         }
-
         TubeSelection();
         BallGenerate();
     }
@@ -151,11 +149,11 @@ public class GameManager : MonoBehaviour
                 {
                     FirstClickedObject.transform.GetChild(FirstClickedObject.transform.childCount - 1).transform.parent = SecondClickedObject.transform;
                    
-                    SecondClickedObject.transform.GetChild(SecondClickedObject.transform.childCount - 1).transform.DOMove(SecondClickedObject.transform.GetChild(4).transform.position, 0.3f)
+                    SecondClickedObject.transform.GetChild(SecondClickedObject.transform.childCount - 1).transform.DOMove(SecondClickedObject.transform.GetChild(4).transform.position, 0.3f).SetEase(Ease.InOutExpo)
                     .OnComplete(() =>
                     {
                         SecondClickedObject.transform.GetChild(SecondClickedObject.transform.childCount - 1).transform.DOMove(SecondClickedObject.transform.GetChild(SecondClickedObject.transform.childCount - 6).transform.position, 0.3f);
-                    }).SetEase(Ease.InOutExpo);
+                    }).SetEase(Ease.OutBounce);
                     flag = false;
                 }
                 else
