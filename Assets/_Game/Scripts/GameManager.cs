@@ -40,11 +40,11 @@ public class GameManager : MonoBehaviour
                 //        AllTubes.Add(child.gameObject);
                 //    }
                 Debug.Log("Before");
-                for (int j = 0; j < AllLevelTubes[i].transform.childCount; j++)
-                {
-                    Debug.Log("Foreach called");
-                    AllTubes.Add(AllLevelTubes[lvlIndex].transform.GetChild(j).gameObject);
-                }
+                //for (int j = 0; j < AllLevelTubes[i].transform.childCount; j++)
+                //{
+                //    Debug.Log("Foreach called");
+                //    AllTubes.Add(AllLevelTubes[lvlIndex].transform.GetChild(j).gameObject);
+                //}
 
             }
             else
