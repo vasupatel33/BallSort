@@ -110,17 +110,14 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            //Debug.Log("e");
             if(clickedObj.transform.childCount >= 9)
             {
-                //Debug.Log("Tube full");
                 FirstClickedObject.transform.GetChild(FirstClickedObject.transform.childCount - 1).transform.DOMove(FirstClickedObject.transform.GetChild(FirstClickedObject.transform.childCount - 6).transform.position, 0.3f);
                 
                 flag = false;
             }
             else if(clickedObj.transform.childCount == 5)
             {
-                //Debug.Log("Else ifff");
                 SecondClickedObject = clickedObj;
                 FirstClickedObject.transform.GetChild(FirstClickedObject.transform.childCount - 1).transform.parent = SecondClickedObject.transform;
                 SecondClickedObject.transform.GetChild(SecondClickedObject.transform.childCount - 1).transform.DOMove(SecondClickedObject.transform.GetChild(4).transform.position,0.3f)
@@ -177,8 +174,6 @@ public class GameManager : MonoBehaviour
             {
                 for (int i = 5; i < 9; i++)
                 {
-                    //Debug.Log("Six index = "+ selectedtube.transform.GetChild(6).gameObject.name);
-                    //Debug.Log("next index = "+ selectedtube.transform.GetChild(i).gameObject.name);
                     if (selectedtube.transform.GetChild(5).gameObject.tag != selectedtube.transform.GetChild(i).gameObject.tag)
                     {
                         Debug.Log("if workss");
