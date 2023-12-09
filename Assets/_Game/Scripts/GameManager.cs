@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -22,29 +23,18 @@ public class GameManager : MonoBehaviour
     }
     private void Start()
     {
-        PlayerPrefs.SetInt("IndexLevel",0);
-        int lvlIndex = PlayerPrefs.GetInt("IndexLevel",0);
-        Debug.Log("Index of level ="+lvlIndex);
+        levelIndex = PlayerPrefs.GetInt("IndexLevel",0);
+        Debug.Log("Index of level ="+levelIndex);
         for (int i = 0; i < AllLevelTubes.Count; i++)
         {
-            Debug.Log("fOR");
-            if (lvlIndex == i)
+            if (levelIndex == i)
             {
-                Debug.Log("iF CALLED");
                 AllLevelTubes[i].SetActive(true);
-                //foreach (Transform child in AllLevelTubes[i].transform)
-                //{
-                //    if (child != null && child.gameObject != null)
-                //    {
-                //        Debug.Log("Foreach called");
-                //        AllTubes.Add(child.gameObject);
-                //    }
-                Debug.Log("Before");
-                //for (int j = 0; j < AllLevelTubes[i].transform.childCount; j++)
-                //{
-                //    Debug.Log("Foreach called");
-                //    AllTubes.Add(AllLevelTubes[lvlIndex].transform.GetChild(j).gameObject);
-                //}
+
+                for (int j = 0; j < AllLevelTubes[i].transform.GetChild(0).transform.childCount; j++)
+                {
+                    AllTubes.Add(AllLevelTubes[levelIndex].transform.GetChild(0).transform.GetChild(j).gameObject);
+                }
 
             }
             else
@@ -58,7 +48,7 @@ public class GameManager : MonoBehaviour
     public void TubeSelection()
     {
         int RandomTubeIndex;
-        for (int i = 0; i < 3; i++)
+        for (int i = 0 ; i < AllTubes.Count - 2 ; i++)
         {
             do
             {
@@ -93,11 +83,10 @@ public class GameManager : MonoBehaviour
             RandomlyColorIntIndex.Add(RandomColorIndex);
             for (int j = 0; j < 4; j++)
             {
-                //Debug.Log("Forrr");
                 int val = Random.Range(0, AllGeneratedBall.Count);
                 AllGeneratedBall[val].GetComponent<MeshRenderer>().material.color = RandomlySelectedColor[i];
                 AllGeneratedBall[val].GetComponent<MeshRenderer>().tag = AllTags[RandomlyColorIntIndex[i]];
-                AllGeneratedBall.RemoveAt(val);  // Use RemoveAt to remove by index
+                AllGeneratedBall.RemoveAt(val);
             }
         }
     }
@@ -111,7 +100,7 @@ public class GameManager : MonoBehaviour
             {
                 FirstClickedObject = clickedObj;
                 FirstClickedObject.transform.GetChild(FirstClickedObject.transform.childCount - 1).transform.DOMove(FirstClickedObject.transform.GetChild(4).transform.position,0.3f).SetEase(Ease.OutBounce);
-                //position = FirstClickedObject.transform.GetChild(4).transform.position;
+             
                 flag = true;
             }
             else
@@ -182,14 +171,14 @@ public class GameManager : MonoBehaviour
                 isChanged = false;
             }
         }
-        if(WinList.Count == 3)
+        if(WinList.Count == AllTubes.Count - 2)
         {
             foreach (GameObject selectedtube in WinList)
             {
                 for (int i = 5; i < 9; i++)
                 {
-                    Debug.Log("Six index = "+ selectedtube.transform.GetChild(6).gameObject.name);
-                    Debug.Log("next index = "+ selectedtube.transform.GetChild(i).gameObject.name);
+                    //Debug.Log("Six index = "+ selectedtube.transform.GetChild(6).gameObject.name);
+                    //Debug.Log("next index = "+ selectedtube.transform.GetChild(i).gameObject.name);
                     if (selectedtube.transform.GetChild(5).gameObject.tag != selectedtube.transform.GetChild(i).gameObject.tag)
                     {
                         Debug.Log("if workss");
@@ -209,6 +198,11 @@ public class GameManager : MonoBehaviour
         }
         else
         {
+            Debug.Log("Index = "+levelIndex);
+            levelIndex++;
+            Debug.Log("Index = "+levelIndex);
+            PlayerPrefs.SetInt("IndexLevel",levelIndex);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             Debug.Log("Game completed");
         }
     }
