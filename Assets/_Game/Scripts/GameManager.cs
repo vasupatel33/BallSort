@@ -124,7 +124,7 @@ public class GameManager : MonoBehaviour
                     .OnComplete(() =>
                     {
                         SecondClickedObject.transform.GetChild(SecondClickedObject.transform.childCount - 1).transform.DOMove(SecondClickedObject.transform.GetChild(0).transform.position, 0.3f);
-                    }).SetEase(Ease.InOutExpo);
+                    }).SetEase(Ease.OutBounce);
                 //SecondClickedObject.transform.GetChild(SecondClickedObject.transform.childCount - 1).transform.position = SecondClickedObject.transform.GetChild(0).transform.position;
                 flag = false;
             }
@@ -135,11 +135,11 @@ public class GameManager : MonoBehaviour
                 {
                     FirstClickedObject.transform.GetChild(FirstClickedObject.transform.childCount - 1).transform.parent = SecondClickedObject.transform;
                    
-                    SecondClickedObject.transform.GetChild(SecondClickedObject.transform.childCount - 1).transform.DOMove(SecondClickedObject.transform.GetChild(4).transform.position, 0.3f).SetEase(Ease.InOutExpo)
+                    SecondClickedObject.transform.GetChild(SecondClickedObject.transform.childCount - 1).transform.DOMove(SecondClickedObject.transform.GetChild(4).transform.position, 0.3f).SetEase(Ease.InElastic)
                     .OnComplete(() =>
                     {
                         SecondClickedObject.transform.GetChild(SecondClickedObject.transform.childCount - 1).transform.DOMove(SecondClickedObject.transform.GetChild(SecondClickedObject.transform.childCount - 6).transform.position, 0.3f);
-                    }).SetEase(Ease.OutBounce);
+                    }).SetEase(Ease.InOutElastic);
                     flag = false;
                 }
                 else
