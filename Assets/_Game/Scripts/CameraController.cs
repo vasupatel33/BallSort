@@ -1,37 +1,52 @@
-using System;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class CameraController : MonoBehaviour
 {
-    [SerializeField] private Camera cam;
-    [SerializeField] private Transform target;
-    [SerializeField] private float distanceToTarget = 10;
+    public Transform target; // The object around which the camera will rotate
+    public float rotationSpeed = 5.0f;
+    public float zoomSpeed = 2.0f;
+    public float minZoomDistance = 2.0f;
+    public float maxZoomDistance = 10.0f;
 
-    private Vector3 previousPosition;
-
-    private void Update()
+    void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        // Rotate camera with mouse drag
+        if (Input.GetMouseButton(0))
         {
-            previousPosition = cam.ScreenToViewportPoint(Input.mousePosition);
+            float mouseX = Input.GetAxis("Mouse X") * rotationSpeed;
+            float mouseY = Input.GetAxis("Mouse Y") * rotationSpeed;
+
+            RotateCamera(mouseX, mouseY);
         }
-        else if (Input.GetMouseButton(0))
-        {
-            Vector3 newPosition = cam.ScreenToViewportPoint(Input.mousePosition);
-            Vector3 direction = previousPosition - newPosition;
 
-            float rotationAroundYAxis = -direction.x * 180; // camera moves horizontally
-            float rotationAroundXAxis = direction.y * 180; // camera moves vertically
+        // Zoom in/out with mouse scroll wheel
+        float scroll = Input.GetAxis("Mouse ScrollWheel");
+        ZoomCamera(scroll);
+    }
 
-            cam.transform.position = target.position;
+    void RotateCamera(float mouseX, float mouseY)
+    {
+        // Rotate the camera around the target
+        transform.RotateAround(target.position, Vector3.up, mouseX);
+        transform.RotateAround(target.position, transform.right, -mouseY);
 
-            cam.transform.Rotate(new Vector3(1, 0, 0), rotationAroundXAxis);
-            cam.transform.Rotate(new Vector3(0, 1, 0), rotationAroundYAxis, Space.World);
+        // Ensure the camera is always looking at the target
+        transform.LookAt(target);
+    }
 
-            cam.transform.Translate(new Vector3(0, 0, -distanceToTarget));
+    void ZoomCamera(float scroll)
+    {
+        // Calculate zoom amount
+        float zoomAmount = scroll * zoomSpeed;
 
-            previousPosition = newPosition;
-        }
+        // Adjust the camera's position based on the zoom amount
+        transform.Translate(Vector3.forward * zoomAmount);
+
+        // Clamp the camera position to the specified zoom limits
+        transform.position = new Vector3(
+            transform.position.x,
+            Mathf.Clamp(transform.position.y, minZoomDistance, maxZoomDistance),
+            transform.position.z
+        );
     }
 }
