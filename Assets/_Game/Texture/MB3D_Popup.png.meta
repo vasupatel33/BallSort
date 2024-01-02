@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 8114495b0cfdad0409b0513837329049
+guid: 266a2977fb835394f8db9fb8f3a4957f
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -37,8 +37,8 @@ TextureImporter:
     filterMode: 1
     aniso: 1
     mipBias: 0
-    wrapU: 1
-    wrapV: 1
+    wrapU: 0
+    wrapV: 0
     wrapW: 0
   nPOTScale: 0
   lightmap: 0
@@ -121,7 +121,28 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: MB3D_Popup_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 1308
+        height: 1764
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 70, y: 61, z: 68, w: 72}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ee775b186ee476a449de0505763465cb
+      internalID: 1143780915
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -132,7 +153,8 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      MB3D_Popup_0: 1143780915
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

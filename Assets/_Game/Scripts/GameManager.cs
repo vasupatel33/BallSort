@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    [SerializeField] private GameObject GameOverPanel;
     [SerializeField] List<GameObject> AllLevelTubes;
     [SerializeField] List<GameObject> AllTubes;
     [SerializeField] List<Color> AllColors;
@@ -35,7 +36,6 @@ public class GameManager : MonoBehaviour
                 {
                     AllTubes.Add(AllLevelTubes[levelIndex].transform.GetChild(0).transform.GetChild(j).gameObject);
                 }
-
             }
             else
             {
@@ -193,12 +193,24 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("Index = "+levelIndex);
-            levelIndex++;
-            Debug.Log("Index = "+levelIndex);
-            PlayerPrefs.SetInt("IndexLevel",levelIndex);
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            
+            GameOverPanel.SetActive(true);
+            
             Debug.Log("Game completed");
         }
+    }
+    public void OnHomeBtnGameOver()
+    {
+        SceneManager.LoadScene(0);
+        GameOverPanel.SetActive(false);
+    }
+    public void OnContinueBtnGameOver()
+    {
+        Debug.Log("Index = "+levelIndex);
+        levelIndex++;
+        Debug.Log("Index = " + levelIndex);
+        PlayerPrefs.SetInt("IndexLevel", levelIndex);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        GameOverPanel.SetActive(false);
     }
 }
